@@ -4,8 +4,7 @@ module Mutations
   class AuthSignUp < BaseMutation
     description "Creates a new user"
 
-    field :user, Types::UserType, null: false
-    field :token, String, null: false
+    type Types::UserType, null: false
 
     argument :name, String, required: false
     argument :email, String
@@ -15,7 +14,8 @@ module Mutations
       user = User.new(email:, password:, name:)
 
       if user.save
-        { token: JsonWebToken.encode(payload: { user_id: user.id }), user: }
+        set_session_token(user)
+        user
       else
         graphql_error(user)
       end

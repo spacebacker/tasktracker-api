@@ -3,7 +3,8 @@
 module Types
   class TaskType < Types::BaseObject
     field :id, ID, null: false
-    field :name, String
+    field :name, String, null: false
+    field :status, String, null: false
     field :description, String
     field :project, Types::ProjectType, null: false
     field :assignee, Types::UserType, null: false

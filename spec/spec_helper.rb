@@ -16,7 +16,7 @@
 RSpec.configure do |config|
 
   config.before(:each, type: :request) do
-    host! ENV['HOSTNAME']
+    host! ENV['SERVER']
   end
 
   # rspec-expectations config goes here. You can use an alternate

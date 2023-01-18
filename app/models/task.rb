@@ -5,6 +5,7 @@
 #  id          :bigint           not null, primary key
 #  description :text
 #  name        :string
+#  status      :text             default("open"), not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  assignee_id :bigint           not null
@@ -28,4 +29,6 @@ class Task < ApplicationRecord
   belongs_to :project
   belongs_to :assignee, class_name: :User, foreign_key: :assignee_id
   belongs_to :creator, class_name: :User, foreign_key: :creator_id
+
+  default_scope { order(created_at: :desc) }
 end

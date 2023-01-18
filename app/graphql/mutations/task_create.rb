@@ -5,13 +5,10 @@ module Mutations
     description "Creates a new task"
 
     type Types::TaskType
+    argument :task_data, Types::TaskInputType, required: true
 
-    argument :name, String
-    argument :project_id, Integer
-    argument :assignee_id, Integer, required: false
-
-    def resolve(name:, project_id:, assignee_id: current_user&.id)
-      task = Task.new(name:, project_id:, assignee_id:, creator: current_user)
+    def resolve(task_data:)
+      task = Task.new(**task_data, creator: current_user)
       task.save ? task : graphql_error(task)
     end
   end

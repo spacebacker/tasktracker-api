@@ -14,6 +14,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_22_224331) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  # Custom types defined in this database.
+  # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "status", ["open", "inprogress", "resolved", "closed"]
+
   create_table "projects", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -27,6 +31,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_22_224331) do
   create_table "tasks", force: :cascade do |t|
     t.string "name"
     t.text "description"
+    t.text "status", default: "open", null: false
     t.bigint "project_id", null: false
     t.bigint "assignee_id", null: false
     t.bigint "creator_id", null: false

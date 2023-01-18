@@ -1,40 +1,44 @@
 require 'rails_helper'
 
 module Mutations
-  RSpec.describe TaskUpdate, type: :request do
-    describe '.resolve' do
-      it 'updates task and returning updated task' do
-        id = FactoryBot.create(:task).id
-        name = Faker::Hipster.sentence(word_count: rand(3..7))
-        assignee_id = FactoryBot.create(:user).id.to_s
+  RSpec.describe TaskUpdate do
+    it 'updates task and returning updated task' do
+      task = FactoryBot.create(:task)
 
-        task = task_update(id:, name:, assignee_id:)
+      task_data = {
+        id: task.id,
+        name: Faker::Hipster.sentence(word_count: rand(3..7)),
+        assignee_id: FactoryBot.create(:user).id.to_s,
+        current_user: task.creator
+      }
+    
+      task_update_data = task_update(**task_data)
 
-        expect(task.dig(:name)).to eq name
-        expect(task.dig(:assignee, :id)).to eq assignee_id
-      end
+      expect(task_update_data.dig(:name)).to eq task_data[:name]
+      expect(task_update_data.dig(:assignee, :id)).to eq task_data[:assignee_id]
+    end
 
-      private
+    private
 
-      def task_update(id:, name:, assignee_id:)
-        token = JsonWebToken.encode(payload: { user_id: assignee_id })
-        query = <<~GQL
-          mutation { 
-            taskUpdate(
-              id: "#{id}",
+    def task_update(id:, name:, assignee_id:, current_user:)
+      query = <<~GQL
+        mutation { 
+          taskUpdate(
+            id: "#{id}",
+            taskData: {
               name: "#{name}",
               assigneeId: #{assignee_id}
-            ) { 
-              name
-              assignee {
-                id
-              }
-            } 
-          }
-        GQL
-        
-        gql(query:, token:).dig(:data, :taskUpdate)
-      end
+            }
+          ) { 
+            name
+            assignee {
+              id
+            }
+          } 
+        }
+      GQL
+      
+      execute(query:, current_user:).dig(:data, :taskUpdate)
     end
   end
 end

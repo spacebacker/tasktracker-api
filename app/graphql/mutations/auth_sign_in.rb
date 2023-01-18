@@ -4,8 +4,7 @@ module Mutations
   class AuthSignIn < BaseMutation
     description "Creates a new user"
 
-    field :user, Types::UserType, null: false
-    field :token, String, null: false
+    type Types::UserType, null: false
 
     argument :email, String
     argument :password, String
@@ -14,7 +13,8 @@ module Mutations
       user = User.find_by(email:)&.authenticate(password)
 
       if user
-        { token: JsonWebToken.encode(payload: { user_id: user.id }), user: }
+        set_session_token(user)
+        user
       else
         graphql_error('User not found or password is incorrect.')
       end

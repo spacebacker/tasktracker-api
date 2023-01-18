@@ -1,31 +1,34 @@
 require 'rails_helper'
 
 module Mutations
-  RSpec.describe TaskCreate, type: :request do
-    describe '.resolve' do
-      it 'creates and returning a task' do
-        name = Faker::Hipster.sentence(word_count: rand(3..7))
-        expect(task_create(name:).dig(:name)).to eq name
-      end
+  RSpec.describe TaskCreate do
+    it 'creates and returning a task' do
+      name = Faker::Hipster.sentence(word_count: rand(3..7))
+      expect(task_create(name:).dig(:name)).to eq name
+    end
 
-      private
+    private
 
-      def task_create(name:)
-        project = FactoryBot.create(:project)
-        token = JsonWebToken.encode(payload: { user_id: project.user_id })
-        query = <<~GQL
-          mutation { 
-            taskCreate(
-              projectId: #{project.id},
-              name: "#{name}"
-            ) { 
-              name
-            } 
+    def task_create(name:)
+      project = FactoryBot.create(:project)
+      current_user = FactoryBot.create(:user)
+      assignee_id = FactoryBot.create(:user).id
+
+      query = <<~GQL
+        mutation { 
+        taskCreate(
+          taskData: {
+            name: "#{name}",
+            projectId: #{project.id},
+            assigneeId: #{assignee_id}
           }
-        GQL
+          ) { 
+            name
+          } 
+        }
+      GQL
 
-        gql(query:, token:).dig(:data, :taskCreate)
-      end
+      execute(query:, current_user:).dig(:data, :taskCreate)
     end
   end
 end

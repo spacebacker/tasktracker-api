@@ -7,14 +7,13 @@ module Mutations
     type Types::TaskType
 
     argument :id, ID
-    argument :name, String, required: false
-    argument :assignee_id, Integer, required: false
+    argument :task_data, Types::TaskInputType, required: true
 
-    def resolve(id:, name:, assignee_id:)
-      task = Task.find_by(id:)
+    def resolve(id:, task_data:)
+      task = current_user.owned_tasks.find_by(id:)
       return graphql_error('Task not found') unless task 
 
-      task.update(name:, assignee_id:) ? task : graphql_error(task)
+      task.update(**task_data) ? task : graphql_error(task)
     end
   end
 end

@@ -6,6 +6,6 @@ module Types
     field :name, String
     field :description, String
     field :user, Types::UserType, null: false
-    field :tasks, Types::ProjectType.connection_type
+    field :tasks, Types::TaskType.connection_type
   end
 end

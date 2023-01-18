@@ -10,10 +10,9 @@ module JsonWebToken
   end
 
   def decode(token:)
-    return {} if token.nil? || token.blank?
+    return {} if token.blank?
 
-    decoded = JWT.decode(token, SECRET_KEY_JWT)[0]
-    HashWithIndifferentAccess.new(decoded)
+    HashWithIndifferentAccess.new(JWT.decode(token, SECRET_KEY_JWT)[0])
   rescue JWT::DecodeError => e
     {}
   end

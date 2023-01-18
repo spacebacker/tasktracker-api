@@ -2,6 +2,7 @@
 
 module Queries
   class CurrentUser < Queries::BaseQuery
+    description "Returns logged in user"
     type Types::UserType, null: true
 
     def resolve

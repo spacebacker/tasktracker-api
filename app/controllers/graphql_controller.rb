@@ -21,12 +21,15 @@ class GraphqlController < ApplicationController
   private
 
   def context
-    { current_user: current_user }
+    { 
+      session: session,
+      current_user: current_user 
+    }
   end
 
   def current_user
     User.find_by(
-      id: JsonWebToken.decode(token: request.authorization).dig(:user_id)
+      id: JsonWebToken.decode(token: session[:token]).dig(:user_id)
     )
   end
 

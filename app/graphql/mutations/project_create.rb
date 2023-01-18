@@ -5,10 +5,12 @@ module Mutations
     description "Creates a new project"
 
     type Types::ProjectType
-    argument :name, String
 
-    def resolve(name:)
-      project = Project.new(name:, user: current_user)
+    argument :name, String
+    argument :description, String, required: false
+
+    def resolve(name:, description: nil)
+      project = Project.new(name:, description:, user: current_user)
       project.save ? project : graphql_error(project)
     end
   end

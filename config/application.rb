@@ -24,9 +24,9 @@ module Tasktracker
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
-    config.hosts << ENV['HOSTNAME']
+    config.hosts << ENV['SERVER']
 
-    config.session_store :cookie_store, key: '_tasktracker_session'
+    config.session_store :cookie_store, key: '_tasktracker_session', domain: :all, same_site: :none, secure: :true
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use config.session_store, config.session_options
   end
