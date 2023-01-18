@@ -6,8 +6,11 @@ Tasktracker-api is a GraphQL api for Tasktracker project written on Ruby on Rail
 
 ```bash
 bundle install && rails db:create && rails db:migrate && rails db:seed
+```
 
-Set CLIENT and SERVER hostnames variables in .env
+## Setup
+
+```bash
 .env
     SERVER=localhost
     CLIENT=localhost:port
@@ -18,9 +21,6 @@ Set CLIENT and SERVER hostnames variables in .env
 ```bash
 # Start GraphQL api server
 rails s
-
-# GraphQL Playground
-http://127.0.0.1:3000/graphiql
 
 # Accounts for testing
 login:
@@ -39,4 +39,7 @@ password:
 
 # Run tests
 bundle exec rspec
+
+# GraphQL Playground
+http://127.0.0.1:3000/graphiql
 ```
