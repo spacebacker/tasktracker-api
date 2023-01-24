@@ -8,7 +8,7 @@ module Mutations
     field :id, ID, null: false
 
     def resolve(id:)
-      task = current_user.owned_tasks.find_by(id: id)
+      task = current_user.created_tasks.find_by(id: id)
       return graphql_error('Task not found') unless task 
 
       task.destroy ? task : graphql_error(task)

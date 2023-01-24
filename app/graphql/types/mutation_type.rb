@@ -8,7 +8,7 @@ module Types
     field :project_create, mutation: Mutations::ProjectCreate
     field :project_delete, mutation: Mutations::ProjectDelete
     field :auth_sign_up, mutation: Mutations::AuthSignUp
-    field :auth_sign_in, mutation: Mutations::AuthSignIn
-    field :auth_sign_out, mutation: Mutations::AuthSignOut
+    field :auth_log_in, mutation: Mutations::AuthLogIn
+    field :auth_log_out, mutation: Mutations::AuthLogOut
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mutations
-  class AuthSignOut < BaseMutation
+  class AuthLogOut < BaseMutation
     description "Sign out current user"
     field :status, String, null: false
 

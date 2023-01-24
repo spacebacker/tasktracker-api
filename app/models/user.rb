@@ -15,7 +15,7 @@
 #
 class User < ApplicationRecord
   has_many :assigned_tasks, foreign_key: :assignee_id, class_name: :Task, dependent: :destroy
-  has_many :owned_tasks, foreign_key: :creator_id, class_name: :Task, dependent: :destroy
+  has_many :created_tasks, foreign_key: :creator_id, class_name: :Task, dependent: :destroy
   has_many :projects, dependent: :destroy
 
   has_secure_password

@@ -4,7 +4,9 @@
 # the maximum value specified for Puma. Default is set to 5 threads for minimum
 # and maximum; this matches the default thread size of Active Record.
 #
-max_threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }
+
+max_threads = ENV.fetch("RAILS_ENV", "development") == "development" ? 1 : 5
+max_threads_count = ENV.fetch("RAILS_MAX_THREADS") { max_threads }
 min_threads_count = ENV.fetch("RAILS_MIN_THREADS") { max_threads_count }
 threads min_threads_count, max_threads_count
 
@@ -15,22 +17,21 @@ worker_timeout 3600 if ENV.fetch("RAILS_ENV", "development") == "development"
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 #
-# port ENV.fetch("PORT") { 3005 }
+# port ENV.fetch("PORT") { 3004 }
 
 # Specifies the `environment` that Puma will run in.
 #
-environment ENV.fetch("RAILS_ENV") { "development" }
+environment ENV.fetch("RAILS_ENV") { "production" }
+# environment 'production'
 
 # Specifies the `pidfile` that Puma will use.
 pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 
-if ENV['RAILS_ENV'] == 'development'  
-  ssl_bind '127.0.0.1', 3004, {
-    key: "#{File.join('dev-https-certs', 'localhost.key')}",
-    cert: "#{File.join('dev-https-certs', 'localhost.crt')}",
-    verify_mode: 'none'
-  }
-end
+ssl_bind '127.0.0.1', 3004, {
+  key: "#{File.join('dev-https-certs', 'localhost.key')}",
+  cert: "#{File.join('dev-https-certs', 'localhost.crt')}",
+  verify_mode: 'none'
+}
 
 # Specifies the number of `workers` to boot in clustered mode.
 # Workers are forked web server processes. If using threads and workers together
@@ -39,6 +40,7 @@ end
 # processes).
 #
 # workers ENV.fetch("WEB_CONCURRENCY") { 2 }
+workers 8
 
 # Use the `preload_app!` method when specifying a `workers` number.
 # This directive tells Puma to first boot the application and load code

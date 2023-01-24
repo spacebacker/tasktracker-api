@@ -9,5 +9,15 @@ module Types
     field :project, Types::ProjectType, null: false
     field :assignee, Types::UserType, null: false
     field :creator, Types::UserType, null: false
+
+    def project
+      dataloader.with(::Sources::ActiveRecord, ::Project).load(object.project_id)
+    end
+    def assignee
+      dataloader.with(::Sources::ActiveRecord, ::User).load(object.assignee_id)
+    end
+    def creator
+      dataloader.with(::Sources::ActiveRecord, ::User).load(object.creator_id)
+    end
   end
 end

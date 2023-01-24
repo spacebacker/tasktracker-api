@@ -13,8 +13,10 @@ module Mutations
 
       context 'when email is already exist' do
         it 'returns an error' do
-          user = FactoryBot.create(:user)
-          sign_up_data = auth_sign_up(email: user.email, password: user.password)
+          params = FactoryBot.attributes_for(:user)
+          
+          user = FactoryBot.create(:user, **params)
+          sign_up_data = auth_sign_up(**params)
 
           expect(sign_up_data.dig(:errors)).not_to be_blank
           expect(sign_up_data.dig(:data, :authSignUp)).to be_nil
@@ -23,10 +25,11 @@ module Mutations
 
       private
 
-      def auth_sign_up(email:, password:)
+      def auth_sign_up(name:, email:, password:)
         gql query: <<~GQL
           mutation { 
             authSignUp(
+              name: "#{name}", 
               email: "#{email}", 
               password: "#{password}"
             ) { 

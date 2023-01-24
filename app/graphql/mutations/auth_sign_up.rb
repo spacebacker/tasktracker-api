@@ -6,11 +6,11 @@ module Mutations
 
     type Types::UserType, null: false
 
-    argument :name, String, required: false
+    argument :name, String
     argument :email, String
     argument :password, String
 
-    def resolve(email:, password:, name: nil)
+    def resolve(email:, password:, name:)
       user = User.new(email:, password:, name:)
 
       if user.save

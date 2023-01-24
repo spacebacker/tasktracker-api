@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mutations
-  class AuthSignIn < BaseMutation
+  class AuthLogIn < BaseMutation
     description "Creates a new user"
 
     type Types::UserType, null: false

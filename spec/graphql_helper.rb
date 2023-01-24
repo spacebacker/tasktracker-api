@@ -1,6 +1,6 @@
 module GraphqlHelper
   def gql(query:)
-    post '/graphql', params: { query: }
+    post '/', params: { query: }
     HashWithIndifferentAccess.new(JSON.parse(response.body))
   end
 
